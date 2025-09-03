@@ -110,6 +110,19 @@ export default function TodoApp() {
   const [selectedReminderFilter, setSelectedReminderFilter] = useState<string>("")
   const [addingSubtaskFor, setAddingSubtaskFor] = useState<string | null>(null)
 
+  const getReminderStatus = (reminderDate?: Date) => {
+    if (!reminderDate) return null
+
+    const now = new Date()
+    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate())
+    const reminderDay = new Date(reminderDate.getFullYear(), reminderDate.getMonth(), reminderDate.getDate())
+
+    if (reminderDay < today) return "overdue"
+    if (reminderDay.getTime() === today.getTime()) return "today"
+    if (reminderDay <= new Date(today.getTime() + 7 * 24 * 60 * 60 * 1000)) return "upcoming"
+    return "future"
+  }
+
   const addTask = (parentId?: string) => {
     if (newTaskTitle.trim()) {
       const tags = newTaskTags
@@ -323,19 +336,6 @@ export default function TodoApp() {
     return colorConfig
   }
 
-  const getReminderStatus = (reminderDate?: Date) => {
-    if (!reminderDate) return null
-
-    const now = new Date()
-    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate())
-    const reminderDay = new Date(reminderDate.getFullYear(), reminderDate.getMonth(), reminderDate.getDate())
-
-    if (reminderDay < today) return "overdue"
-    if (reminderDay.getTime() === today.getTime()) return "today"
-    if (reminderDay <= new Date(today.getTime() + 7 * 24 * 60 * 60 * 1000)) return "upcoming"
-    return "future"
-  }
-
   const getReminderBadge = (reminderDate?: Date) => {
     const status = getReminderStatus(reminderDate)
     if (!status) return null
@@ -389,7 +389,7 @@ export default function TodoApp() {
         {(reminderStats.overdue > 0 || reminderStats.today > 0) && (
           <Card className="mb-6 border-red-200 dark:border-red-800 bg-red-50 dark:bg-red-950">
             <CardContent className="pt-6">
-              <div className="flex items-center gap-2 text-red-800 dark:text-red-200">
+              <div className="flex items-center gap-2 text-sm text-red-800 dark:text-red-200">
                 <BellRing className="w-5 h-5" />
                 <span className="font-medium">Reminder Alerts</span>
               </div>
