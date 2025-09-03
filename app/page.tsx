@@ -7,6 +7,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Progress } from "@/components/ui/progress"
 import { Separator } from "@/components/ui/separator"
+import { LanguageToggle } from "@/components/language-toggle"
+import { useLanguage } from "@/contexts/language-context"
 import {
   Trash2,
   Plus,
@@ -40,66 +42,9 @@ interface Task {
   isExpanded?: boolean
 }
 
-const TASK_COLORS = [
-  {
-    name: "Default",
-    value: "default",
-    bg: "bg-white dark:bg-purple-950",
-    border: "border-purple-200 dark:border-purple-800",
-    text: "text-purple-900 dark:text-purple-100",
-  },
-  {
-    name: "Red",
-    value: "red",
-    bg: "bg-red-50 dark:bg-red-950",
-    border: "border-red-200 dark:border-red-800",
-    text: "text-red-900 dark:text-red-100",
-  },
-  {
-    name: "Orange",
-    value: "orange",
-    bg: "bg-orange-50 dark:bg-orange-950",
-    border: "border-orange-200 dark:border-orange-800",
-    text: "text-orange-900 dark:text-orange-100",
-  },
-  {
-    name: "Yellow",
-    value: "yellow",
-    bg: "bg-yellow-50 dark:bg-yellow-950",
-    border: "border-yellow-200 dark:border-yellow-800",
-    text: "text-yellow-900 dark:text-yellow-100",
-  },
-  {
-    name: "Green",
-    value: "green",
-    bg: "bg-green-50 dark:bg-green-950",
-    border: "border-green-200 dark:border-green-800",
-    text: "text-green-900 dark:text-green-100",
-  },
-  {
-    name: "Blue",
-    value: "blue",
-    bg: "bg-blue-50 dark:bg-blue-950",
-    border: "border-blue-200 dark:border-blue-800",
-    text: "text-blue-900 dark:text-blue-100",
-  },
-  {
-    name: "Indigo",
-    value: "indigo",
-    bg: "bg-indigo-50 dark:bg-indigo-950",
-    border: "border-indigo-200 dark:border-indigo-800",
-    text: "text-indigo-900 dark:text-indigo-100",
-  },
-  {
-    name: "Pink",
-    value: "pink",
-    bg: "bg-pink-50 dark:bg-pink-950",
-    border: "border-pink-200 dark:border-pink-800",
-    text: "text-pink-900 dark:text-pink-100",
-  },
-]
-
 export default function TodoApp() {
+  const { t } = useLanguage()
+
   const [tasks, setTasks] = useState<Task[]>([])
   const [newTaskTitle, setNewTaskTitle] = useState("")
   const [newTaskTags, setNewTaskTags] = useState("")
@@ -109,6 +54,65 @@ export default function TodoApp() {
   const [selectedColors, setSelectedColors] = useState<string[]>([])
   const [selectedReminderFilter, setSelectedReminderFilter] = useState<string>("")
   const [addingSubtaskFor, setAddingSubtaskFor] = useState<string | null>(null)
+
+  const TASK_COLORS = [
+    {
+      name: t("color.default"),
+      value: "default",
+      bg: "bg-white dark:bg-purple-950",
+      border: "border-purple-200 dark:border-purple-800",
+      text: "text-purple-900 dark:text-purple-100",
+    },
+    {
+      name: t("color.red"),
+      value: "red",
+      bg: "bg-red-50 dark:bg-red-950",
+      border: "border-red-200 dark:border-red-800",
+      text: "text-red-900 dark:text-red-100",
+    },
+    {
+      name: t("color.orange"),
+      value: "orange",
+      bg: "bg-orange-50 dark:bg-orange-950",
+      border: "border-orange-200 dark:border-orange-800",
+      text: "text-orange-900 dark:text-orange-100",
+    },
+    {
+      name: t("color.yellow"),
+      value: "yellow",
+      bg: "bg-yellow-50 dark:bg-yellow-950",
+      border: "border-yellow-200 dark:border-yellow-800",
+      text: "text-yellow-900 dark:text-yellow-100",
+    },
+    {
+      name: t("color.green"),
+      value: "green",
+      bg: "bg-green-50 dark:bg-green-950",
+      border: "border-green-200 dark:border-green-800",
+      text: "text-green-900 dark:text-green-100",
+    },
+    {
+      name: t("color.blue"),
+      value: "blue",
+      bg: "bg-blue-50 dark:bg-blue-950",
+      border: "border-blue-200 dark:border-blue-800",
+      text: "text-blue-900 dark:text-blue-100",
+    },
+    {
+      name: t("color.indigo"),
+      value: "indigo",
+      bg: "bg-indigo-50 dark:bg-indigo-950",
+      border: "border-indigo-200 dark:border-indigo-800",
+      text: "text-indigo-900 dark:text-indigo-100",
+    },
+    {
+      name: t("color.pink"),
+      value: "pink",
+      bg: "bg-pink-50 dark:bg-pink-950",
+      border: "border-pink-200 dark:border-pink-800",
+      text: "text-pink-900 dark:text-pink-100",
+    },
+  ]
 
   const getReminderStatus = (reminderDate?: Date) => {
     if (!reminderDate) return null
@@ -342,22 +346,22 @@ export default function TodoApp() {
 
     const badges = {
       overdue: {
-        text: "Overdue",
+        text: t("badge.overdue"),
         className: "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200",
         icon: AlertTriangle,
       },
       today: {
-        text: "Due Today",
+        text: t("badge.today"),
         className: "bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-200",
         icon: BellRing,
       },
       upcoming: {
-        text: "Upcoming",
+        text: t("badge.upcoming"),
         className: "bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200",
         icon: Clock,
       },
       future: {
-        text: "Scheduled",
+        text: t("badge.scheduled"),
         className: "bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-200",
         icon: Bell,
       },
@@ -382,8 +386,11 @@ export default function TodoApp() {
     <div className="min-h-screen bg-gradient-to-br from-purple-50 to-purple-100 dark:from-purple-950 dark:to-purple-900 p-4">
       <div className="max-w-2xl mx-auto">
         <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-purple-900 dark:text-purple-100 mb-2">Todo Master</h1>
-          <p className="text-purple-700 dark:text-purple-300">Organize your tasks with style</p>
+          <div className="flex justify-end mb-4">
+            <LanguageToggle />
+          </div>
+          <h1 className="text-4xl font-bold text-purple-900 dark:text-purple-100 mb-2">{t("app.title")}</h1>
+          <p className="text-purple-700 dark:text-purple-300">{t("app.subtitle")}</p>
         </div>
 
         {(reminderStats.overdue > 0 || reminderStats.today > 0) && (
@@ -391,17 +398,19 @@ export default function TodoApp() {
             <CardContent className="pt-6">
               <div className="flex items-center gap-2 text-sm text-red-800 dark:text-red-200">
                 <BellRing className="w-5 h-5" />
-                <span className="font-medium">Reminder Alerts</span>
+                <span className="font-medium">{t("reminders.alerts")}</span>
               </div>
               <div className="mt-2 space-y-1 text-sm">
                 {reminderStats.overdue > 0 && (
                   <div className="text-red-700 dark:text-red-300">
-                    {reminderStats.overdue} task{reminderStats.overdue > 1 ? "s" : ""} overdue
+                    {reminderStats.overdue} {reminderStats.overdue > 1 ? t("reminders.tasks") : t("reminders.task")}{" "}
+                    {t("reminders.overdue")}
                   </div>
                 )}
                 {reminderStats.today > 0 && (
                   <div className="text-red-700 dark:text-red-300">
-                    {reminderStats.today} task{reminderStats.today > 1 ? "s" : ""} due today
+                    {reminderStats.today} {reminderStats.today > 1 ? t("reminders.tasks") : t("reminders.task")}{" "}
+                    {t("reminders.today")}
                   </div>
                 )}
               </div>
@@ -412,7 +421,7 @@ export default function TodoApp() {
         <Card className="mb-6 border-purple-200 dark:border-purple-800">
           <CardHeader>
             <CardTitle className="text-purple-800 dark:text-purple-200">
-              {addingSubtaskFor ? "Add Subtask" : "Add New Task"}
+              {addingSubtaskFor ? t("task.addSubtask") : t("task.add")}
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -420,7 +429,7 @@ export default function TodoApp() {
               {addingSubtaskFor && (
                 <div className="flex items-center gap-2 text-sm text-purple-600 dark:text-purple-400 bg-purple-50 dark:bg-purple-900 p-2 rounded">
                   <Indent className="w-4 h-4" />
-                  Adding subtask to: {tasks.find((t) => t.id === addingSubtaskFor)?.title}
+                  {t("task.addingSubtaskTo")} {tasks.find((t) => t.id === addingSubtaskFor)?.title}
                   <Button
                     variant="ghost"
                     size="sm"
@@ -433,7 +442,7 @@ export default function TodoApp() {
               )}
               <div className="flex gap-2">
                 <Input
-                  placeholder="What needs to be done?"
+                  placeholder={t("task.placeholder")}
                   value={newTaskTitle}
                   onChange={(e) => setNewTaskTitle(e.target.value)}
                   onKeyPress={(e) => e.key === "Enter" && !e.shiftKey && addTask(addingSubtaskFor || undefined)}
@@ -444,14 +453,14 @@ export default function TodoApp() {
                   className="bg-purple-600 hover:bg-purple-700"
                 >
                   <Plus className="w-4 h-4 mr-2" />
-                  Add
+                  {t("task.addButton")}
                 </Button>
               </div>
 
               <div className="flex gap-2 items-center">
                 <Tag className="w-4 h-4 text-purple-600 dark:text-purple-400" />
                 <Input
-                  placeholder="Add tags (comma separated, e.g., work, urgent, personal)"
+                  placeholder={t("task.tagsPlaceholder")}
                   value={newTaskTags}
                   onChange={(e) => setNewTaskTags(e.target.value)}
                   onKeyPress={(e) => e.key === "Enter" && !e.shiftKey && addTask(addingSubtaskFor || undefined)}
@@ -462,7 +471,7 @@ export default function TodoApp() {
                 <Bell className="w-4 h-4 text-purple-600 dark:text-purple-400" />
                 <Input
                   type="datetime-local"
-                  placeholder="Set reminder (optional)"
+                  placeholder={t("task.reminderPlaceholder")}
                   value={newTaskReminder}
                   onChange={(e) => setNewTaskReminder(e.target.value)}
                   className="flex-1 text-sm"
@@ -499,7 +508,7 @@ export default function TodoApp() {
           <Card className="mb-6 border-purple-200 dark:border-purple-800">
             <CardHeader>
               <div className="flex items-center justify-between">
-                <CardTitle className="text-purple-800 dark:text-purple-200 text-lg">Filters</CardTitle>
+                <CardTitle className="text-purple-800 dark:text-purple-200 text-lg">{t("filters.title")}</CardTitle>
                 {(selectedTags.length > 0 || selectedColors.length > 0 || selectedReminderFilter) && (
                   <Button
                     variant="ghost"
@@ -508,7 +517,7 @@ export default function TodoApp() {
                     className="text-purple-600 hover:text-purple-700"
                   >
                     <X className="w-4 h-4 mr-1" />
-                    Clear All
+                    {t("filters.clearAll")}
                   </Button>
                 )}
               </div>
@@ -516,20 +525,22 @@ export default function TodoApp() {
             <CardContent className="space-y-4">
               {tasks.some((t) => t.reminderDate) && (
                 <div>
-                  <h4 className="text-sm font-medium text-purple-700 dark:text-purple-300 mb-2">Reminders</h4>
+                  <h4 className="text-sm font-medium text-purple-700 dark:text-purple-300 mb-2">
+                    {t("filters.reminders")}
+                  </h4>
                   <div className="flex flex-wrap gap-2">
                     {[
-                      { value: "overdue", label: "Overdue", count: reminderStats.overdue },
-                      { value: "today", label: "Due Today", count: reminderStats.today },
-                      { value: "upcoming", label: "Upcoming", count: reminderStats.upcoming },
+                      { value: "overdue", label: t("filter.overdue"), count: reminderStats.overdue },
+                      { value: "today", label: t("filter.today"), count: reminderStats.today },
+                      { value: "upcoming", label: t("filter.upcoming"), count: reminderStats.upcoming },
                       {
                         value: "with-reminders",
-                        label: "With Reminders",
+                        label: t("filter.withReminders"),
                         count: tasks.filter((t) => t.reminderDate).length,
                       },
                       {
                         value: "no-reminders",
-                        label: "No Reminders",
+                        label: t("filter.noReminders"),
                         count: tasks.filter((t) => !t.reminderDate).length,
                       },
                     ].map((filter) => (
@@ -557,7 +568,7 @@ export default function TodoApp() {
               {allTags.length > 0 && (
                 <div>
                   <div className="flex items-center justify-between mb-2">
-                    <h4 className="text-sm font-medium text-purple-700 dark:text-purple-300">Tags</h4>
+                    <h4 className="text-sm font-medium text-purple-700 dark:text-purple-300">{t("filters.tags")}</h4>
                     {selectedTags.length > 0 && (
                       <Button
                         variant="ghost"
@@ -565,7 +576,7 @@ export default function TodoApp() {
                         onClick={clearTagFilters}
                         className="text-xs text-purple-600 hover:text-purple-700 h-auto p-1"
                       >
-                        Clear
+                        {t("filters.clear")}
                       </Button>
                     )}
                   </div>
@@ -593,7 +604,7 @@ export default function TodoApp() {
               {usedColors.length > 1 && (
                 <div>
                   <div className="flex items-center justify-between mb-2">
-                    <h4 className="text-sm font-medium text-purple-700 dark:text-purple-300">Colors</h4>
+                    <h4 className="text-sm font-medium text-purple-700 dark:text-purple-300">{t("filters.colors")}</h4>
                     {selectedColors.length > 0 && (
                       <Button
                         variant="ghost"
@@ -601,7 +612,7 @@ export default function TodoApp() {
                         onClick={clearColorFilters}
                         className="text-xs text-purple-600 hover:text-purple-700 h-auto p-1"
                       >
-                        Clear
+                        {t("filters.clear")}
                       </Button>
                     )}
                   </div>
@@ -634,7 +645,7 @@ export default function TodoApp() {
               {(selectedTags.length > 0 || selectedColors.length > 0 || selectedReminderFilter) && (
                 <div className="text-sm text-purple-600 dark:text-purple-400 pt-2 border-t border-purple-200 dark:border-purple-800">
                   <Filter className="w-4 h-4 inline mr-1" />
-                  Active filters:
+                  {t("filters.active")}
                   {selectedTags.length > 0 && ` Tags: ${selectedTags.join(", ")}`}
                   {selectedTags.length > 0 && (selectedColors.length > 0 || selectedReminderFilter) && " | "}
                   {selectedColors.length > 0 &&
@@ -653,15 +664,15 @@ export default function TodoApp() {
               <div className="text-2xl font-bold text-purple-600 dark:text-purple-400">{totalCount}</div>
               <div className="text-sm text-purple-700 dark:text-purple-300">
                 {selectedTags.length > 0 || selectedColors.length > 0 || selectedReminderFilter
-                  ? "Filtered Tasks"
-                  : "Total Tasks"}
+                  ? t("stats.filtered")
+                  : t("stats.total")}
               </div>
             </CardContent>
           </Card>
           <Card className="text-center border-purple-200 dark:border-purple-800">
             <CardContent className="pt-6">
               <div className="text-2xl font-bold text-green-600 dark:text-green-400">{completedCount}</div>
-              <div className="text-sm text-purple-700 dark:text-purple-300">Completed</div>
+              <div className="text-sm text-purple-700 dark:text-purple-300">{t("stats.completed")}</div>
             </CardContent>
           </Card>
           <Card className="text-center border-purple-200 dark:border-purple-800">
@@ -669,7 +680,7 @@ export default function TodoApp() {
               <div className="text-2xl font-bold text-orange-600 dark:text-orange-400">
                 {totalCount - completedCount}
               </div>
-              <div className="text-sm text-purple-700 dark:text-purple-300">Remaining</div>
+              <div className="text-sm text-purple-700 dark:text-purple-300">{t("stats.remaining")}</div>
             </CardContent>
           </Card>
         </div>
@@ -678,7 +689,7 @@ export default function TodoApp() {
           <Card className="mb-6 border-purple-200 dark:border-purple-800">
             <CardContent className="pt-6">
               <div className="flex items-center justify-between mb-2">
-                <span className="text-sm font-medium text-purple-700 dark:text-purple-300">Progress</span>
+                <span className="text-sm font-medium text-purple-700 dark:text-purple-300">{t("stats.progress")}</span>
                 <span className="text-sm text-purple-600 dark:text-purple-400">{Math.round(progressPercentage)}%</span>
               </div>
               <Progress value={progressPercentage} className="h-2 bg-purple-100 dark:bg-purple-900" />
@@ -689,18 +700,18 @@ export default function TodoApp() {
         <Card className="border-purple-200 dark:border-purple-800">
           <CardHeader>
             <CardTitle className="text-purple-800 dark:text-purple-200">
-              Your Tasks
+              {t("tasks.title")}
               {(selectedTags.length > 0 || selectedColors.length > 0 || selectedReminderFilter) && (
-                <span className="text-sm font-normal text-purple-600 dark:text-purple-400 ml-2">(Filtered)</span>
+                <span className="text-sm font-normal text-purple-600 dark:text-purple-400 ml-2">
+                  {t("tasks.filtered")}
+                </span>
               )}
             </CardTitle>
           </CardHeader>
           <CardContent>
             {visibleTasks.length === 0 ? (
               <div className="text-center py-8 text-purple-600 dark:text-purple-400">
-                {tasks.length === 0
-                  ? "No tasks yet. Add one above to get started!"
-                  : "No tasks match the selected filters."}
+                {tasks.length === 0 ? t("tasks.empty") : t("tasks.noMatch")}
               </div>
             ) : (
               <div className="space-y-3">
@@ -776,14 +787,14 @@ export default function TodoApp() {
                           <div className="flex items-center gap-4 text-xs text-purple-600 dark:text-purple-400 mt-1">
                             <div className="flex items-center gap-1">
                               <Calendar className="w-3 h-3" />
-                              Created {task.createdAt.toLocaleDateString()}
+                              {t("tasks.created")} {task.createdAt.toLocaleDateString()}
                             </div>
                             {task.reminderDate && (
                               <>
                                 <Separator orientation="vertical" className="h-3" />
                                 <div className="flex items-center gap-1">
                                   <Bell className="w-3 h-3" />
-                                  Reminder {task.reminderDate.toLocaleDateString()} at{" "}
+                                  {t("tasks.reminder")} {task.reminderDate.toLocaleDateString()} at{" "}
                                   {task.reminderDate.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
                                 </div>
                               </>
@@ -793,7 +804,7 @@ export default function TodoApp() {
                                 <Separator orientation="vertical" className="h-3" />
                                 <div className="flex items-center gap-1 text-green-600 dark:text-green-400">
                                   <CheckCircle2 className="w-3 h-3" />
-                                  Completed {task.completedAt.toLocaleDateString()}
+                                  {t("tasks.completedOn")} {task.completedAt.toLocaleDateString()}
                                 </div>
                               </>
                             )}
@@ -805,7 +816,7 @@ export default function TodoApp() {
                             variant="secondary"
                             className="bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200"
                           >
-                            Completed
+                            {t("tasks.completed")}
                           </Badge>
                         )}
 
